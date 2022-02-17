@@ -86,6 +86,7 @@ private:
         size_t fifoMaxSize;
         uint32_t reportModeFlag;
         bool isWakeUp;
+        bool useUniqueIdForUuid;
 
         // dynamic sensor specific
         std::string uniqueId;
@@ -121,6 +122,14 @@ private:
     // helper function to find sensor control feature usage from packets
     bool findSensorControlUsage(const std::vector<HidParser::ReportPacket> &packets);
 
+    // try to parse sensor description feature value to see if it matches any
+    // known sensors
+    void detectSensorFromDescription(const std::string &description);
+
+    // try to parse sensor description feature value to see if it matches the
+    // Android header tracker sensor
+    bool detectAndroidHeadTrackerSensor(const std::string &description);
+
     // try to parse sensor description feature value to see if it matches
     // android specified custom sensor definition.
     bool detectAndroidCustomSensor(const std::string &description);
@@ -137,14 +146,20 @@ private:
 
     // Features for control sensor
     int mReportingStateId;
-    unsigned int mReportingStateOffset;
+    unsigned int mReportingStateBitOffset;
+    unsigned int mReportingStateBitSize;
+    int mReportingStateDisableIndex;
+    int mReportingStateEnableIndex;
 
     int mPowerStateId;
-    unsigned int mPowerStateOffset;
+    unsigned int mPowerStateBitOffset;
+    unsigned int mPowerStateBitSize;
+    int mPowerStateOffIndex;
+    int mPowerStateOnIndex;
 
     int mReportIntervalId;
-    unsigned int mReportIntervalOffset;
-    unsigned int mReportIntervalSize;
+    unsigned int mReportIntervalBitOffset;
+    unsigned int mReportIntervalBitSize;
 
     // Input report translate table
     std::vector<ReportTranslateRecord> mTranslateTable;
