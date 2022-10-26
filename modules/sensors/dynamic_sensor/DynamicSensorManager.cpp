@@ -22,6 +22,7 @@
 
 #include <utils/Log.h>
 #include <utils/SystemClock.h>
+#include <cutils/properties.h>
 
 #include <cassert>
 
@@ -63,6 +64,10 @@ DynamicSensorManager::DynamicSensorManager(
         SENSOR_FLAG_SPECIAL_REPORTING_MODE | SENSOR_FLAG_WAKE_UP,
         { NULL, NULL }
     };
+
+    kSensorOpTimeout = std::chrono::milliseconds(
+            (uint32_t)property_get_int32(
+                "vendor.dynamic_sensor.setup.timeout.ms", 900));
 }
 
 DynamicSensorManager::~DynamicSensorManager() {
