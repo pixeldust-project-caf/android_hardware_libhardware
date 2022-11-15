@@ -127,8 +127,7 @@ private:
 
     // Sensor operation queue. Calls to the sensor HAL must complete within 1
     // second.
-    static constexpr std::chrono::milliseconds
-            kSensorOpTimeout = std::chrono::milliseconds(900);
+    std::chrono::milliseconds kSensorOpTimeout = std::chrono::milliseconds(900);
     std::mutex mSensorOpQueueLock;
     std::queue<std::pair<uint64_t, std::shared_future<int>>> mSensorOpQueue;
     uint64_t mNextSensorOpIndex = 0;
